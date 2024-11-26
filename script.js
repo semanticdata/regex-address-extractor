@@ -6,7 +6,7 @@ document.getElementById("extractButton").addEventListener("click", function () {
     console.log("Input Text:", inputText);
   
     // Updated Regular Expression to match addresses
-    const addressRegex = /\d+\s+([A-Za-z0-9]+\s?)+\s+(Av|Ave|Avenue|St|Street|Dr|Drive|Rd|Road|Blvd|Boulevard|Ln|Lane|Pl|Place|Ct|Court)(\s+[A-Za-z0-9]*)?/g;
+    const addressRegex = /\d+\s+([A-Za-z0-9]+\s?)+\s+(Av|Ave|Avenue|St|Street|Dr|Drive|Rd|Road|Blvd|Boulevard|Ln|Lane|Pl|Place|Ct|Court)(\s+[A-Za-z0-9]*)?/gi;
   
     // Split the input text into lines
     const lines = inputText.split("\n");
