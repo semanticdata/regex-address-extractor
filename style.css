@@ -52,6 +52,7 @@ ul {
     overflow-y: scroll;
     border: 1px solid;
     border-radius: 5px;
+    min-height: 4rem;
 }
 
 li {
