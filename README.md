@@ -99,6 +99,53 @@ To modify the address matching patterns:
 2. Test new patterns on [regex101](https://regex101.com/)
 3. Consider adding new street types or address formats as needed
 
+## Testing
+
+The project includes a comprehensive test suite using Jest. The tests cover:
+
+- Basic address extraction (single and multiple addresses)
+- Address variations (different street types, hyphenated numbers)
+- Directional suffixes (North, South, East, West, N, S, E, W)
+- Edge cases (addresses with periods, apostrophes)
+- Input validation (handling invalid addresses)
+- Separator handling (commas, "and", semicolons)
+- Performance testing with large inputs
+
+To run the tests:
+
+```bash
+# Install dependencies
+npm install
+
+# Run tests once
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+```
+
+### Test Categories
+
+1. **Basic Functionality Tests**
+   - Single address extraction
+   - Multiple comma-separated addresses
+   - Different street type recognition
+
+2. **Address Variations**
+   - Support for 11 different street types
+   - Hyphenated building numbers (e.g., "123-125")
+   - Directional suffixes in both full (North) and abbreviated (N) forms
+
+3. **Edge Cases**
+   - Addresses with periods (e.g., "St. John's Street")
+   - Mixed valid and invalid addresses
+   - Invalid address formats
+   - Empty or malformed inputs
+
+4. **Performance**
+   - Processing of 1000 addresses under 1 second
+   - Memory efficient address extraction
+
 ## License
 
 Source code in this repository is available under the [MIT License](./LICENSE).

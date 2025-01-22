@@ -1,0 +1,13 @@
+{
+  "name": "address-extractor",
+  "version": "1.0.0",
+  "description": "A web tool to extract street addresses from text",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+} 
