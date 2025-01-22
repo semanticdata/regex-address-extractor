@@ -6,101 +6,265 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Address Extractor</title>
     <meta name="description" content="A web tool to extract street addresses from given text.">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --success-color: #059669;
+            --error-color: #dc2626;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --radius: 0.75rem;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        * {
             margin: 0;
-            background-color: #f4f4f4;
-            max-height: 100vh;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+            padding: 2rem 1rem;
         }
 
         .container {
-            width: 90%;
-            max-width: 600px;
-            margin: 1rem auto;
-            padding: 1rem;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
         }
 
-        h1 {
+        .app-header {
             text-align: center;
-            margin: 0 0 0.5rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .app-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .app-description {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
         }
 
         textarea {
-            width: calc(100% - 20px);
-            height: 10rem;
-            padding: 0.5rem;
-            font-size: 16px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            margin-bottom: 1rem;
+            width: 100%;
+            min-height: 200px;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: calc(var(--radius) - 0.25rem);
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+            transition: border-color 0.2s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         button {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
+            flex: 1;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 500;
             border: none;
-            border-radius: 5px;
-            background-color: #28a745;
-            color: white;
+            border-radius: calc(var(--radius) - 0.25rem);
             cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
 
-        button:hover {
-            background-color: #218838;
+        .primary-button {
+            background-color: var(--primary-color);
+            color: white;
         }
 
-        ul {
-            list-style-type: none;
-            padding: 0;
-            max-height: 20rem;
-            overflow-y: scroll;
-            border: 1px solid;
-            border-radius: 5px;
-            min-height: 4rem;
+        .primary-button:hover {
+            background-color: var(--primary-hover);
         }
 
-        li {
-            padding: 8px;
-            border-bottom: 1px solid #ccc;
+        .secondary-button {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .secondary-button:hover {
+            background-color: var(--border-color);
         }
 
         .feedback {
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 5px;
+            margin: 1rem 0;
+            padding: 1rem;
+            border-radius: calc(var(--radius) - 0.25rem);
             display: none;
         }
 
         .success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            background-color: #ecfdf5;
+            color: var(--success-color);
+            border: 1px solid #a7f3d0;
             display: block;
         }
 
         .error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+            background-color: #fef2f2;
+            color: var(--error-color);
+            border: 1px solid #fecaca;
             display: block;
+        }
+
+        .results-container {
+            margin-top: 2rem;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .results-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .results-header .secondary-button {
+            flex: 0 0 auto;
+            min-width: 120px;
+            margin-left: 1rem;
+        }
+
+        .address-list {
+            list-style: none;
+            border: 2px solid var(--border-color);
+            border-radius: calc(var(--radius) - 0.25rem);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .address-item {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .address-item:last-child {
+            border-bottom: none;
+        }
+
+        .address-number {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            min-width: 2rem;
+        }
+
+        @media (max-width: 640px) {
+            .button-group {
+                flex-direction: column;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h1>Address Extractor</h1>
-        <textarea id="inputText" rows="10" placeholder="Paste your input here..."></textarea>
-        <button id="extractButton">Extract Addresses</button>
-        <div id="feedback" class="feedback"></div>
-        <h2>Extracted Addresses:</h2>
-        <ul id="addressList"></ul>
-        <button id="copyButton">Copy Addresses</button>
+        <header class="app-header">
+            <h1 class="app-title">Address Extractor</h1>
+            <p class="app-description">Extract and organize street addresses from any text</p>
+        </header>
+
+        <main>
+            <div class="card">
+                <div class="input-group">
+                    <label for="inputText" class="input-label">Input Text</label>
+                    <textarea id="inputText" placeholder="Paste your text containing addresses here..."
+                        spellcheck="false"></textarea>
+                </div>
+
+                <div class="button-group">
+                    <button id="extractButton" class="primary-button">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        Extract Addresses
+                    </button>
+                    <button id="clearButton" class="secondary-button">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                        Clear
+                    </button>
+                </div>
+
+                <div id="feedback" class="feedback"></div>
+
+                <div class="results-container">
+                    <div class="results-header">
+                        <h2 class="results-title">Extracted Addresses</h2>
+                        <button id="copyButton" class="secondary-button">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                            </svg>
+                            Copy All
+                        </button>
+                    </div>
+                    <ul id="addressList" class="address-list"></ul>
+                </div>
+            </div>
+        </main>
     </div>
 
     <script>
@@ -114,14 +278,11 @@
                 return;
             }
 
-            // Enhanced Regular Expression to match more address patterns
             const addressRegex = /\d+(?:-\d+)?\s+(?:[A-Za-z0-9\.']+\s?)+(?:Avenue|Ave|Street|St|Drive|Dr|Road|Rd|Boulevard|Blvd|Lane|Ln|Place|Pl|Court|Ct|Circle|Cir|Way|Parkway|Pkwy|Highway|Hwy)(?:\s+[A-Za-z]+)?(?:\s+(?:North|South|East|West|N|S|E|W))?/gi;
 
-            // Split the input text into lines
             const lines = inputText.split("\n");
             const addresses = [];
 
-            // Loop through each line and apply the regex to find addresses
             lines.forEach((line) => {
                 const matchedAddresses = line.match(addressRegex);
                 if (matchedAddresses) {
@@ -129,40 +290,45 @@
                 }
             });
 
-            // Debugging: Check what the regex is extracting
-            console.log("Extracted Addresses:", addresses);
-
-            // Sort addresses in alphabetical order
-            addresses.sort();
-
-            // Clear the list before adding new items
             const addressList = document.getElementById("addressList");
             addressList.innerHTML = "";
-
-            // Append each sorted address as a list item
-            addresses.forEach((address) => {
-                const listItem = document.createElement("li");
-                listItem.textContent = address.trim();
-                addressList.appendChild(listItem);
-            });
-
-            // Debugging: Confirm that addresses are displayed
-            console.log("Final Address List:", addressList.innerHTML);
 
             if (addresses.length === 0) {
                 feedbackEl.textContent = "No addresses found in the input text.";
                 feedbackEl.className = "feedback error";
             } else {
+                addresses.sort();
+                addresses.forEach((address, index) => {
+                    const listItem = document.createElement("li");
+                    listItem.className = "address-item";
+
+                    const numberSpan = document.createElement("span");
+                    numberSpan.className = "address-number";
+                    numberSpan.textContent = `${index + 1}.`;
+
+                    const addressSpan = document.createElement("span");
+                    addressSpan.textContent = address.trim();
+
+                    listItem.appendChild(numberSpan);
+                    listItem.appendChild(addressSpan);
+                    addressList.appendChild(listItem);
+                });
+
                 feedbackEl.textContent = `Found ${addresses.length} address${addresses.length === 1 ? '' : 'es'}.`;
                 feedbackEl.className = "feedback success";
             }
         });
 
-        // Function to copy the address list to the clipboard
+        document.getElementById("clearButton").addEventListener("click", function () {
+            document.getElementById("inputText").value = "";
+            document.getElementById("addressList").innerHTML = "";
+            document.getElementById("feedback").style.display = "none";
+        });
+
         document.getElementById("copyButton").addEventListener("click", function () {
             const addressList = document.getElementById("addressList");
             const feedbackEl = document.getElementById("feedback");
-            
+
             if (!addressList.getElementsByTagName("li").length) {
                 feedbackEl.textContent = "No addresses to copy.";
                 feedbackEl.className = "feedback error";
@@ -170,7 +336,7 @@
             }
 
             const addresses = Array.from(addressList.getElementsByTagName("li"))
-                .map((li) => li.textContent)
+                .map((li) => li.lastChild.textContent)
                 .join("\n");
 
             navigator.clipboard.writeText(addresses)
