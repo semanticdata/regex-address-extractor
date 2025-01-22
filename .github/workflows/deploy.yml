@@ -25,6 +25,7 @@ jobs:
 
       - name: Rename and move index.html
         run: |
+          mkdir dist
           mv regex-address-extractor.html dist/index.html
 
       - name: Setup Pages
