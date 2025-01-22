@@ -68,6 +68,27 @@
             padding: 8px;
             border-bottom: 1px solid #ccc;
         }
+
+        .feedback {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
     </style>
 </head>
 
@@ -76,6 +97,7 @@
         <h1>Address Extractor</h1>
         <textarea id="inputText" rows="10" placeholder="Paste your input here..."></textarea>
         <button id="extractButton">Extract Addresses</button>
+        <div id="feedback" class="feedback"></div>
         <h2>Extracted Addresses:</h2>
         <ul id="addressList"></ul>
         <button id="copyButton">Copy Addresses</button>
@@ -84,13 +106,16 @@
     <script>
         document.getElementById("extractButton").addEventListener("click", function () {
             const inputText = document.getElementById("inputText").value;
+            const feedbackEl = document.getElementById("feedback");
 
-            // Debugging: Check if the button is clicked and inputText is retrieved
-            console.log("Button clicked!");
-            console.log("Input Text:", inputText);
+            if (!inputText.trim()) {
+                feedbackEl.textContent = "Please enter some text to extract addresses from.";
+                feedbackEl.className = "feedback error";
+                return;
+            }
 
-            // Updated Regular Expression to match addresses
-            const addressRegex = /\d+\s+([A-Za-z0-9]+\s?)+\s+(Av|Ave|Avenue|St|Street|Dr|Drive|Rd|Road|Blvd|Boulevard|Ln|Lane|Pl|Place|Ct|Court)(\s+[A-Za-z0-9]*)?/gi;
+            // Enhanced Regular Expression to match more address patterns
+            const addressRegex = /\d+(?:-\d+)?\s+(?:[A-Za-z0-9\.']+\s?)+(?:Avenue|Ave|Street|St|Drive|Dr|Road|Rd|Boulevard|Blvd|Lane|Ln|Place|Pl|Court|Ct|Circle|Cir|Way|Parkway|Pkwy|Highway|Hwy)(?:\s+[A-Za-z]+)?(?:\s+(?:North|South|East|West|N|S|E|W))?/gi;
 
             // Split the input text into lines
             const lines = inputText.split("\n");
@@ -123,25 +148,41 @@
 
             // Debugging: Confirm that addresses are displayed
             console.log("Final Address List:", addressList.innerHTML);
+
+            if (addresses.length === 0) {
+                feedbackEl.textContent = "No addresses found in the input text.";
+                feedbackEl.className = "feedback error";
+            } else {
+                feedbackEl.textContent = `Found ${addresses.length} address${addresses.length === 1 ? '' : 'es'}.`;
+                feedbackEl.className = "feedback success";
+            }
         });
 
         // Function to copy the address list to the clipboard
         document.getElementById("copyButton").addEventListener("click", function () {
             const addressList = document.getElementById("addressList");
+            const feedbackEl = document.getElementById("feedback");
+            
+            if (!addressList.getElementsByTagName("li").length) {
+                feedbackEl.textContent = "No addresses to copy.";
+                feedbackEl.className = "feedback error";
+                return;
+            }
+
             const addresses = Array.from(addressList.getElementsByTagName("li"))
                 .map((li) => li.textContent)
                 .join("\n");
 
-            // Create a temporary textarea to hold the addresses
-            const tempTextArea = document.createElement("textarea");
-            tempTextArea.value = addresses;
-            document.body.appendChild(tempTextArea);
-            tempTextArea.select();
-            document.execCommand("copy");
-            document.body.removeChild(tempTextArea);
-
-            // Debugging: Confirm the addresses are copied
-            console.log("Addresses copied to clipboard:", addresses);
+            navigator.clipboard.writeText(addresses)
+                .then(() => {
+                    feedbackEl.textContent = "Addresses copied to clipboard!";
+                    feedbackEl.className = "feedback success";
+                })
+                .catch(err => {
+                    feedbackEl.textContent = "Failed to copy addresses. Please try again.";
+                    feedbackEl.className = "feedback error";
+                    console.error("Copy failed:", err);
+                });
         });
     </script>
 </body>
