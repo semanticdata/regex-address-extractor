@@ -17,7 +17,12 @@ A web-based tool that extracts street addresses from any text input. This tool u
 
 ## How It Works
 
-The tool uses an enhanced regular expression pattern to identify common US street address formats:
+The tool preprocesses the input text by normalizing common address separators (converting them to newlines):
+- "and" between addresses
+- Commas
+- Semicolons
+
+Then it uses an enhanced regular expression pattern to identify common US street address formats:
 
 ```regex
 \d+(?:-\d+)?\s+(?:[A-Za-z0-9\.']+\s?)+(?:Avenue|Ave|Street|St|Drive|Dr|Road|Rd|Boulevard|Blvd|Lane|Ln|Place|Pl|Court|Ct|Circle|Cir|Way|Parkway|Pkwy|Highway|Hwy)(?:\s+[A-Za-z]+)?(?:\s+(?:North|South|East|West|N|S|E|W))?

@@ -278,9 +278,15 @@
                 return;
             }
 
+            // First, replace common separators with newlines to treat addresses separately
+            const normalizedText = inputText
+                .replace(/\s+and\s+/gi, '\n')
+                .replace(/,\s*/g, '\n')
+                .replace(/;\s*/g, '\n');
+
             const addressRegex = /\d+(?:-\d+)?\s+(?:[A-Za-z0-9\.']+\s?)+(?:Avenue|Ave|Street|St|Drive|Dr|Road|Rd|Boulevard|Blvd|Lane|Ln|Place|Pl|Court|Ct|Circle|Cir|Way|Parkway|Pkwy|Highway|Hwy)(?:\s+[A-Za-z]+)?(?:\s+(?:North|South|East|West|N|S|E|W))?/gi;
 
-            const lines = inputText.split("\n");
+            const lines = normalizedText.split("\n");
             const addresses = [];
 
             lines.forEach((line) => {
